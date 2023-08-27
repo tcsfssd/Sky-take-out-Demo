@@ -12,3 +12,8 @@ sky:
     access-key-id: LTAI5tA4ZVScSuDVqdTXXvsD
     access-key-secret: M9eUVUClk0tK6Ua1oF4cIx1QjGZsSU
     bucket-name: xz-bucket-first
+  redis:
+    host: localhost
+    port: 6379
+    password: 123456
+    database: 10
