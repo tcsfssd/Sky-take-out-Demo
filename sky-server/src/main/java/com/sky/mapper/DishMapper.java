@@ -11,12 +11,14 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
+import java.util.Map;
 
 @Mapper
 public interface DishMapper {
 
     /**
      * 根据分类id查询菜品数量
+     *
      * @param categoryId
      * @return
      */
@@ -24,22 +26,26 @@ public interface DishMapper {
     Integer countByCategoryId(Long categoryId);
 
     /**
-     * 插入菜品
+     * 插入菜品数据
+     *
      * @param dish
      */
-    @AutoFill(OperationType.INSERT)
+    @AutoFill(value = OperationType.INSERT)
     void insert(Dish dish);
 
     /**
      * 菜品分页查询
+     *
      * @param dishPageQueryDTO
      * @return
      */
     Page<DishVO> pageQuery(DishPageQueryDTO dishPageQueryDTO);
 
     /**
-     * 根据ID查询菜品
+     * 根据主键查询菜品
+     *
      * @param id
+     * @return
      */
     @Select("select * from dish where id = #{id}")
     Dish getById(Long id);
@@ -57,7 +63,7 @@ public interface DishMapper {
      *
      * @param dish
      */
-    @AutoFill(OperationType.UPDATE)
+    @AutoFill(value = OperationType.UPDATE)
     void update(Dish dish);
 
     /**
@@ -67,4 +73,19 @@ public interface DishMapper {
      * @return
      */
     List<Dish> list(Dish dish);
+
+    /**
+     * 根据套餐id查询菜品
+     * @param setmealId
+     * @return
+     */
+    @Select("select a.* from dish a left join setmeal_dish b on a.id = b.dish_id where b.setmeal_id = #{setmealId}")
+    List<Dish> getBySetmealId(Long setmealId);
+
+    /**
+     * 根据条件统计菜品数量
+     * @param map
+     * @return
+     */
+    Integer countByMap(Map map);
 }
