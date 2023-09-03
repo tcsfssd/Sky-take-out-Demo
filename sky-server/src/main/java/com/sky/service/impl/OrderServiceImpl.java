@@ -188,6 +188,14 @@ public class OrderServiceImpl implements OrderService {
         Orders orders = orderMapper.selectBuOrderNumber(orderNumber);
         orders.setStatus(Orders.TO_BE_CONFIRMED);//待接单
         orderMapper.update(orders);
+
+        Map map = new HashMap();
+        map.put("type", 1);//消息类型，1表示来单提醒
+        map.put("orderId", orders.getId());
+        map.put("content", "订单号：" + orderNumber);
+
+        //通过websocket实现来电提醒，向客户端浏览器推送消息
+        webSocketServer.sendToAllClient(JSON.toJSONString(map));
     }
 
     /**
